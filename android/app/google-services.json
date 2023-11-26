@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "659685263609",
+    "project_id": "financeapasg",
+    "storage_bucket": "financeapasg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659685263609:android:9bd8fe045873dfb9fb7a28",
+        "android_client_info": {
+          "package_name": "com.example.finance_ap_asg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJCrHKusPXZ2ZIqZU-bUKEvBCWVhoofKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
