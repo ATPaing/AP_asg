@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -137,7 +138,6 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             String username = _usernameController.text;
                             String password = _passwordController.text;
                             var authState = await _firebaseAuthManager.signIn(username,password);
-
                             if (username.trim() == "" || password.trim() == "") {
                                 showDialog(
                                     context: _scaffoldKey.currentContext!,
@@ -161,7 +161,25 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   _scaffoldKey.currentContext!,
                                   MaterialPageRoute(builder: (context) => const HomeScreen()),
                                 );
-                              }
+                              } else if (authState == null) {
+                                showDialog(
+                                  context: _scaffoldKey.currentContext!,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('Error'),
+                                      content: const Text('Incorrect username or password.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(); // Use Navigator.of(context).pop() here
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                            }
                           },
                           child: const Text(
                             'Log in',

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_ap_asg/Widgets/trans_cards.dart';
 import 'package:finance_ap_asg/api/get_data_from_firebase.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../api/authenticate.dart';
 import '../main.dart';
 
 
@@ -19,15 +19,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int? totalBalance = 0;
-  FirebaseRetrieveData firestoreDb = FirebaseRetrieveData();
+
   var taskList = [];
-
-
 
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
-
+    final FirebaseLogout firebaseAuthManager = FirebaseLogout();
+    FirebaseRetrieveData firestoreDb = FirebaseRetrieveData();
     return Scaffold(
       body: Container(
         key: _scaffoldKey,
@@ -75,7 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  await FirebaseAuth.instance.signOut();
+                                  await firebaseAuthManager.signOut();
+                                  Navigator.popUntil(_scaffoldKey.currentContext!, (route) => route.isFirst);
                                   Navigator.pushReplacement(
                                     _scaffoldKey.currentContext!,
                                     MaterialPageRoute(builder: (context) => const MyHomePage()),
@@ -106,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                // stream builder for total amount
                 child: StreamBuilder<List<dynamic>>(
                   stream: firestoreDb.streamDailyTransData(),
                   builder: (context, snapshot) {
@@ -154,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Center(
+                    // stream builder for record card
                     child: StreamBuilder<List<dynamic>>(
                       stream: firestoreDb.streamDailyTransData(),
                       builder: (context, snapshot) {
@@ -163,7 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           return Text('Error: ${snapshot.error}');
                         } else {
                           List<dynamic>? dailyTransList = snapshot.data;
-
                           return TransCards(
                             dailyTransList: dailyTransList,
                           );
@@ -265,7 +266,4 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
-
-
 }

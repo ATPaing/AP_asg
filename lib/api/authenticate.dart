@@ -13,7 +13,7 @@ class FirebaseSignIn {
       );
       return credential; // Sign in successful
     } on FirebaseAuthException catch (e) {
-      return e.message; // Return an error message
+      return null; // Return null if fail
     }
   }
 }

@@ -99,7 +99,7 @@ class _TransCardsState extends State<TransCards> {
   }
 
   Future<void> deleteDocumentById(String identifier) async {
-    try {
+
       // Reference to the collection
       CollectionReference collectionReference = FirebaseFirestore.instance.collection('transactions');
 
@@ -111,10 +111,8 @@ class _TransCardsState extends State<TransCards> {
         // Delete the first matching document (assuming identifier is unique)
         DocumentReference documentReference = querySnapshot.docs.first.reference;
         await documentReference.delete();
-      } else {
       }
-    } catch (e) {
-    }
+
   }
 
 
